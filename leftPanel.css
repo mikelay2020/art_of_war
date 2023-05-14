@@ -1,0 +1,74 @@
+.info{
+
+    position: absolute;
+	width: 197px;
+	height: 100%;
+	border: 3px solid #000;
+}
+
+.info-logo{
+	
+	width: 100%;
+	height: 200px;
+	border: 1px solid #000;
+	grid-gap: 0px;
+	flex-grow: 1;
+}
+
+.info-unit{
+	
+	grid-gap: 0px;
+	flex-grow: 1;
+
+}
+
+.move{
+	width: 100px;
+	height: 50px;
+	border: 1px solid #000;
+	border-radius: 30%;
+	background: #7efa66;
+} 
+
+.move:hover{
+	filter: brightness(150%);
+}
+
+.move:active{
+	filter: brightness(30%);
+
+}
+
+.fire{
+	width: 100px;
+	height: 50px;
+	border: 1px solid #000;
+	border-radius: 30%;
+	background: #d18f8f;
+} 
+
+.fire:hover{
+	filter: brightness(150%);
+}
+
+.fire:active{
+	filter: brightness(30%);
+
+}
+
+.cancel{
+	width: 100px;
+	height: 50px;
+	border: 1px solid #000;
+	border-radius: 30%;
+	background: #5e5e5e;
+} 
+
+.cancel:hover{
+	filter: brightness(150%);
+}
+
+.cancel:active{
+	filter: brightness(30%);
+
+}

@@ -1,0 +1,192 @@
+:root {
+	--array-greedX: 0;
+	--array-greedY: 0;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+*,
+*:before,
+*:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+:focus,
+:active {
+	outline: none;
+}
+a:focus,
+a:active {
+	outline: none;
+}
+nav,
+footer,
+header,
+aside {
+	display: block;
+}
+html,
+body {
+	height: 100%;
+	width: 100%;
+	font-size: 14px;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+input,
+button,
+textarea {
+	font-family: inherit;
+}
+input::-ms-clear {
+	display: none;
+}
+button {
+	cursor: pointer;
+}
+button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+a,
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+ul li {
+	list-style: none;
+}
+img {
+	vertical-align: top;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: inherit;
+	font-weight: 400;
+}
+
+body {
+	display: flex;
+	margin: 10px;
+}
+
+.board { 
+	margin-left: 200px;
+	position: absolute;
+	z-index: 5;
+}
+.unit-board{
+	margin-left: 200px;
+
+	position: relative;
+	z-index: 5;
+}
+
+.array-land {
+	display: grid;
+	grid-template-columns: repeat(var(--array-greedX), 1fr);
+	grid-template-rows: repeat(var(--array-greedY), 1fr);
+	grid-gap: 0px;
+	flex-grow: 1;
+}
+.array-unit {
+	display: grid;
+	grid-template-columns: repeat(var(--array-greedX), 1fr);
+	grid-template-rows: repeat(var(--array-greedY), 1fr);
+	grid-gap: 0px;
+	flex-grow: 1;
+}
+
+body:before {
+	content: "";
+	padding-top: 100%;
+}
+
+.block {
+	width: 40px;
+	height: 40px;
+	cursor:pointer;
+	/* при нажатии ничего не отображается */
+	user-select: none;
+}
+
+.block1 {
+	width: 40px;
+	height: 40px;
+	cursor:pointer;
+	/* при нажатии ничего не отображается */
+	user-select: none;
+}
+
+.block:hover {
+	/* при наведении увеличиваем яркость */
+	filter: brightness(150%);
+}
+.block:active {
+	/* при нажатии уменьшаем яркость */
+	filter: brightness(40%);
+}
+
+.block1:hover {
+	/* при наведении увеличиваем яркость */
+	filter: brightness(150%);
+}
+.block1:active {
+	/* при нажатии уменьшаем яркость */
+	filter: brightness(40%);
+}
+
+.user-unit {
+	background: no-repeat center/120% url("./img/пушка3.jpg");
+}
+
+.trava {
+	background: no-repeat center/200% url("./img/trava.jpg");
+}
+
+.boloto {
+	background: no-repeat center/200% url("./img/boloto.jpg");
+}
+
+.forest {
+	background: no-repeat center/130% url("./img/les.jpg");
+}
+.d30 {
+	background: no-repeat center/130% url("./img/d30.jpg");
+}
+.minomet {
+	background: no-repeat center/130% url("./img/minomet.jpg");
+}
+
+.grad {
+	background: no-repeat center/130% url("./img/grad.jpg");
+}
+.mimo {
+	background: no-repeat center/130% url("./img/mimo.jpg");
+
+}
+
+.popal {
+	background: no-repeat center/130% url("./img/popal.jpg");
+}
+
+.select {
+	border: 4px solid yellow;
+}
+
+.shadow{
+	background-color: rgba(33, 53, 6);
+	opacity: 0.5;
+}
+
