@@ -1,13 +1,11 @@
-.info{
-
-    position: absolute;
+.info {
+	position: absolute;
 	width: 197px;
 	height: 100%;
 	border: 3px solid #000;
 }
 
-.info-logo{
-	
+.info-logo {
 	width: 100%;
 	height: 200px;
 	border: 1px solid #000;
@@ -15,60 +13,67 @@
 	flex-grow: 1;
 }
 
-.info-unit{
-	
-	grid-gap: 0px;
-	flex-grow: 1;
-
+.info-logo > img {
+	width: 100%;
+	height: 199px;
 }
 
-.move{
+.info-unit {
+	width: 100%;
+	height: 500px;
+	border: 1px solid #000;
+}
+
+.info-button {
+	width: 100%;
+	height: 300px;
+	border: 1px solid #000;
+}
+
+.button-move {
 	width: 100px;
 	height: 50px;
 	border: 1px solid #000;
 	border-radius: 30%;
 	background: #7efa66;
-} 
+}
 
-.move:hover{
+.button-move:hover {
 	filter: brightness(150%);
 }
 
-.move:active{
+.button-move:active {
 	filter: brightness(30%);
-
 }
 
-.fire{
+.button-fire {
 	width: 100px;
 	height: 50px;
 	border: 1px solid #000;
 	border-radius: 30%;
 	background: #d18f8f;
-} 
+}
 
-.fire:hover{
+.button-fire:hover {
 	filter: brightness(150%);
 }
 
-.fire:active{
+.button-fire:active {
 	filter: brightness(30%);
-
 }
 
-.cancel{
+.button-cancel {
 	width: 100px;
 	height: 50px;
 	border: 1px solid #000;
 	border-radius: 30%;
 	background: #5e5e5e;
-} 
+}
 
-.cancel:hover{
+.button-cancel:hover {
 	filter: brightness(150%);
 }
 
-.cancel:active{
+.button-cancel:active {
 	filter: brightness(30%);
-
 }
