@@ -180,39 +180,33 @@ for (let i = 0; i < xCoordinate; i++) {
 };
 // console.log(userUnitCoordinates)
 const leftPanelUserInfo = function (unit) {
-	const elem3 = document.getElementById('lp14')
-	const divElement1 = document.createElement('div');
-	divElement1.classList.add('info-logo');
-	elem3.append(divElement1);
-	const divElement2 = document.createElement('div');
-	divElement2.classList.add('info-unit');
-	elem3.append(divElement2);
-	const elem4 = document.querySelector('.info-unit')
+
+	const elem4 = document.querySelector('.info-button');
 	const button = document.createElement('button');
 	button.type = 'button';
 	button.innerHTML = 'Движение';
-	button.className = 'move';
+	button.className = 'button-move';
 	elem4.append(button);
 	const button2 = document.createElement('button');
 	button2.type = 'button';
 	button2.innerHTML = 'Огонь';
-	button2.className = 'fire';
+	button2.className = 'button-fire';
 	elem4.append(button2);
 	const button3 = document.createElement('button');
 	button3.type = 'button';
 	button3.innerHTML = 'Отмена';
-	button3.className = 'cancel';
+	button3.className = 'button-cancel';
 	elem4.append(button3);
 
 	document.querySelector('.info-logo').className += unit;
 
 }
 
-const deleteSelectUserUnit = function () {
+const changeSelectUserUnit = function () {
 	const element = document.getElementById("lp14");
-	while (element.firstChild) {
-		element.removeChild(element.firstChild);
-	}
+
+
+
 }
 
 let lastIdUnit = ''
@@ -250,14 +244,14 @@ game.addEventListener("click", function (e) {
 				gradFire = true;
 			}
 		}
-	} else if (e.target.closest('.move')) {
+	} else if (e.target.closest('.button-move')) {
 		console.log('move')
 		//
 		//тут будет код для движения
 		//
 		//
 		//
-	} else if (e.target.closest('.fire')) {
+	} else if (e.target.closest('.button-fire')) {
 		document.querySelector('.array-unit').addEventListener('click', e => {
 			// нажата не блок
 			if (!e.target.closest('.block1')) return;
@@ -304,13 +298,13 @@ game.addEventListener("click", function (e) {
 			}
 
 		}, { "once": true })
-	} else if (e.target.closest('.cancel')) {
+	} else if (e.target.closest('.button-cancel')) {
 		// удаляем предыдущий select
 		document.getElementById(lastIdUnit).classList.remove("select")
 		//выставляем флаг что больше ничего не выбрано
 		isUserUnitEnable = false
 		//удаляем левое меню
-		deleteSelectUserUnit()
+		changeSelectUserUnit()
 	}
 })
 
