@@ -6,8 +6,8 @@ const yCoordinate = 30
 document.documentElement.style.setProperty('--array-greedX', yCoordinate);
 document.documentElement.style.setProperty('--array-greedY', xCoordinate);
 //всавляем в класс arr-block
-const elem = document.getElementById('g15')
-const elem1 = document.getElementById('fr36')
+const elem = document.getElementById('landscape')
+const elem1 = document.getElementById('unit-area')
 
 
 // создаем DIV с ID fon
@@ -213,9 +213,9 @@ let lastIdUnit = ''
 let lastClassUnit = ''
 const hash = ''
 let isUserUnitEnable = false
-const game = document.querySelector('.pole');
+const unitSelection = document.querySelector('.array-unit');
 let gradFIre = false;
-game.addEventListener("click", function (e) {
+unitSelection.addEventListener("click", function (e) {
 	if (e.target.closest('.array-unit')) {
 		if (!e.target.closest('.block1')) return;
 		const selectBlock = e.target.id;
@@ -309,3 +309,9 @@ game.addEventListener("click", function (e) {
 })
 
 
+const landSelection = document.querySelector('.land-board');
+landSelection.addEventListener("mouseover", function (e) {
+let target = e.target.closest('.trava');
+if(!target) return
+console.log (target)
+})

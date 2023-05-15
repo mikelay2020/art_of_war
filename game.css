@@ -81,16 +81,16 @@ body {
 	margin: 10px;
 }
 
-.board { 
+.land-board { 
 	margin-left: 200px;
 	position: absolute;
-	z-index: 5;
+	/* z-index: 5; */
 }
 .unit-board{
 	margin-left: 200px;
 
 	position: relative;
-	z-index: 5;
+	/* z-index: 5; */
 }
 
 .array-land {
