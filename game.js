@@ -13,22 +13,22 @@ const elem1 = document.getElementById('unit-area')
 // создаем DIV с ID fon
 for (let x = 0; x < xCoordinate; x++) {
 	for (let y = 0; y < yCoordinate; y++) {
-		const divEl = document.createElement('div');
-		divEl.classList.add('block');
-		divEl.setAttribute('id', 'x' + x + 'y' + y);
-		elem.append(divEl);
+		const divElement = document.createElement('div');
+		divElement.classList.add('block');
+		divElement.setAttribute('id', 'x' + x + 'y' + y);
+		elem.append(divElement);
 	}
 }
 
 // создаем DIV с ID unit 
-for (let x = 0; x < xCoordinate; x++) {
-	for (let y = 0; y < yCoordinate; y++) {
-		const divEl = document.createElement('div');
-		divEl.classList.add('block1');
-		divEl.setAttribute('id', 'i' + x + 'j' + y);
-		elem1.append(divEl);
-	}
-}
+// for (let x = 0; x < xCoordinate; x++) {
+// 	for (let y = 0; y < yCoordinate; y++) {
+// 		const divEl = document.createElement('div');
+// 		divEl.classList.add('block1');
+// 		divEl.setAttribute('id', 'i' + x + 'j' + y);
+// 		elem1.append(divEl);
+// 	}
+// }
 
 //создаем пустой массив ландшафта
 const map = [];
@@ -97,7 +97,7 @@ const gunsEnemy = function (unit, amount, gun) {
 		let y = Math.floor(Math.random() * yCoordinate + 18);
 		if (unitMap[x][y] === 0) {
 			unitMap[x][y] = unit;
-			document.getElementById('i' + x + 'j' + y).className += gun;
+			document.getElementById('x' + x + 'y' + y).className += gun;
 			k = k + 1;
 		}
 	} while (k < amount);
@@ -115,7 +115,7 @@ const gunsUser = function (unit, amount, gun) {
 		let y = Math.floor(Math.random() * yCoordinate - 18);
 		if (unitMap[x][y] === 0) {
 			unitMap[x][y] = unit;
-			document.getElementById('i' + x + 'j' + y).className += gun;
+			document.getElementById('x' + x + 'y' + y).className += gun;
 			k = k + 1;
 			for (let i = 0; i < xCoordinate; i++) {
 				for (let j = 0; j < yCoordinate - 15; j++) {
@@ -198,26 +198,28 @@ const leftPanelUserInfo = function (unit) {
 	button3.className = 'button-cancel';
 	elem4.append(button3);
 
-	document.querySelector('.info-logo').className += unit;
+	document.querySelector('.logo-picture').className += unit;
 
 }
 
-const changeSelectUserUnit = function () {
-	const element = document.getElementById("lp14");
+const changeSelectUserUnit = function (unit) {
+	document.getElementById('p2').classList='';
 
+	document.getElementById('p2').classList.add(unit);
 
 
 }
+
 
 let lastIdUnit = ''
 let lastClassUnit = ''
 const hash = ''
 let isUserUnitEnable = false
-const unitSelection = document.querySelector('.array-unit');
+const unitSelection = document.querySelector('.main');
 let gradFIre = false;
 unitSelection.addEventListener("click", function (e) {
-	if (e.target.closest('.array-unit')) {
-		if (!e.target.closest('.block1')) return;
+	if (e.target.closest('.array-land')) {
+		if (!e.target.closest('.block')) return;
 		const selectBlock = e.target.id;
 		if (!isUserUnitEnable) {
 			if (hash == '' && e.target.closest('.d30')) {
@@ -252,14 +254,14 @@ unitSelection.addEventListener("click", function (e) {
 		//
 		//
 	} else if (e.target.closest('.button-fire')) {
-		document.querySelector('.array-unit').addEventListener('click', e => {
+		document.querySelector('.array-land').addEventListener('click', e => {
 			// нажата не блок
-			if (!e.target.closest('.block1')) return;
+			if (!e.target.closest('.block')) return;
 			//находим Id нажатого элемента
 			const enemyUnit = e.target.id;
 			//убираем xy
-			let ii = enemyUnit.match(/(?<=i)\d+/) | 0
-			let jj = enemyUnit.match(/(?<=j)\d+/) | 0
+			let ii = enemyUnit.match(/(?<=x)\d+/) | 0
+			let jj = enemyUnit.match(/(?<=y)\d+/) | 0
 			//создаем массив нажатого блока
 			const strToNumber = [];
 			strToNumber.push([ii, jj]);
@@ -304,14 +306,17 @@ unitSelection.addEventListener("click", function (e) {
 		//выставляем флаг что больше ничего не выбрано
 		isUserUnitEnable = false
 		//удаляем левое меню
-		changeSelectUserUnit()
+		// changeSelectUserUnit()
 	}
 })
 
 
 const landSelection = document.querySelector('.land-board');
 landSelection.addEventListener("mouseover", function (e) {
-let target = e.target.closest('.trava');
+	
+let target = e.target.closest('.block');
 if(!target) return
-console.log (target)
+
+let sliceSelect = e.target.classList
+changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-1))
 })
