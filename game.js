@@ -46,7 +46,7 @@ for (let i = 0; i < xCoordinate; i++) {
 		unitMap[i][j] = 0;
 	}
 }
-console.log(unitMap)
+// console.log(unitMap)
 
 // функция ландшафта amount - количество элементов,  lenghtArr - количество повтрорений,
 // rnd - разброс от начальной точки, classLandscape - выбор ландшафта land - выбор типа ландшафта
@@ -203,11 +203,14 @@ const leftPanelUserInfo = function (unit) {
 }
 
 const changeSelectUserUnit = function (unit) {
-	document.getElementById('p2').classList='';
-
-	document.getElementById('p2').classList.add(unit);
-
-
+	const elem =document.getElementById('p2');
+	const descrip2 = document.querySelector('.descript-mousemove')
+	elem.classList='';
+	elem.classList.add(unit);
+	const elemString = ''+unit
+	const result= modules.hasOwnProperty(unit);
+	const found = modules.find(element => element.name === elemString);
+	descrip2.textContent = ''+found.list.description
 }
 
 
@@ -320,3 +323,4 @@ if(!target) return
 let sliceSelect = e.target.classList
 changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-1))
 })
+
