@@ -180,7 +180,6 @@ for (let i = 0; i < xCoordinate; i++) {
 };
 // console.log(userUnitCoordinates)
 const leftPanelUserInfo = function (unit) {
-
 	const elem4 = document.querySelector('.info-button');
 	const button = document.createElement('button');
 	button.type = 'button';
@@ -197,22 +196,43 @@ const leftPanelUserInfo = function (unit) {
 	button3.innerHTML = 'Отмена';
 	button3.className = 'button-cancel';
 	elem4.append(button3);
-
-	document.querySelector('.logo-picture').className += unit;
+	document.querySelector('.logo-picture').classList.add(unit);
+	const elemString = ''+unit
+	const found = modules.find(element => element.name === elemString);
+	document.querySelector('.info-unit-name').textContent = ''+found.list.info;
+	document.querySelector('.info-unit-descript').textContent = ''+found.list.description;
+}
+const cleanSelectUserInfo = function () {
+	document.querySelector('.logo-picture').classList='logo-picture';
+	document.querySelector('.info-unit-name').textContent = 'Играй с умом';
+	document.querySelector('.info-unit-descript').textContent = 'выбери юнит и действуй';
+	const element = document.querySelector(".info-button");
+	while (element.firstChild) {
+		element.removeChild(element.firstChild);
+	  }
 
 }
-
 const changeSelectUserUnit = function (unit) {
 	const elem =document.getElementById('p2');
-	const descrip2 = document.querySelector('.descript-mousemove')
 	elem.classList='';
 	elem.classList.add(unit);
 	const elemString = ''+unit
-	const result= modules.hasOwnProperty(unit);
 	const found = modules.find(element => element.name === elemString);
-	descrip2.textContent = ''+found.list.description
+	document.querySelector('.descript-mousemove').textContent = ''+found.list.description;
+	document.querySelector('.info-mousemove').textContent = ''+found.list.info;
 }
-
+const cleanSelectUserUnit = function (unit) {
+	document.getElementById('p2').classList='';
+	document.querySelector('.descript-mousemove').textContent = '';
+	document.querySelector('.info-mousemove').textContent = '';
+}
+const cleanSelectblock = function(){
+			// удаляем предыдущий select
+			document.getElementById(lastIdUnit).classList.remove("select")
+			//выставляем флаг что больше ничего не выбрано
+			isUserUnitEnable = false
+			//удаляем левое меню
+}
 
 let lastIdUnit = ''
 let lastClassUnit = ''
@@ -228,21 +248,21 @@ unitSelection.addEventListener("click", function (e) {
 			if (hash == '' && e.target.closest('.d30')) {
 				console.log('Выбрана Гаубица')
 				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = ' d30'
+				lastClassUnit = 'd30'
 				lastIdUnit = selectBlock
 				isUserUnitEnable = true
 				leftPanelUserInfo(lastClassUnit)
 			} else if (hash == '' && e.target.closest('.minomet')) {
 				console.log('Выбран Миномет')
 				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = ' minomet'
+				lastClassUnit = 'minomet'
 				lastIdUnit = selectBlock
 				isUserUnitEnable = true
 				leftPanelUserInfo(lastClassUnit)
 			} else if (hash == '' && e.target.closest('.grad')) {
 				console.log('Выбран РСЗО Град')
 				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = ' grad'
+				lastClassUnit = 'grad'
 				lastIdUnit = selectBlock
 				isUserUnitEnable = true
 				leftPanelUserInfo(lastClassUnit)
@@ -284,6 +304,7 @@ unitSelection.addEventListener("click", function (e) {
 						}
 					})
 				});
+
 			}
 			//огонь по своим
 			for (i = 0; i < userUnitCoordinates.length; i++) {
@@ -304,23 +325,22 @@ unitSelection.addEventListener("click", function (e) {
 
 		}, { "once": true })
 	} else if (e.target.closest('.button-cancel')) {
-		// удаляем предыдущий select
-		document.getElementById(lastIdUnit).classList.remove("select")
-		//выставляем флаг что больше ничего не выбрано
-		isUserUnitEnable = false
-		//удаляем левое меню
-		// changeSelectUserUnit()
-	}
+		cleanSelectblock();
+		cleanSelectUserInfo();
+		}
 })
 
-
-const landSelection = document.querySelector('.land-board');
+const landSelection = document.querySelector('.main');
 landSelection.addEventListener("mouseover", function (e) {
-	
-let target = e.target.closest('.block');
-if(!target) return
-
-let sliceSelect = e.target.classList
-changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-1))
+	let target = e.target.closest('.block');
+	if(!target) return
+	let sliceSelect = e.target.classList
+	if(''+ sliceSelect.item(sliceSelect.length-1) === 'select'){
+		changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-2))
+	}else changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-1))
 })
-
+landSelection.addEventListener("mouseout", function (e) {
+	let target = e.target.closest('.block');
+	if(!target) return
+	 cleanSelectUserUnit()
+})

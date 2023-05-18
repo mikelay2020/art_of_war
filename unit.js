@@ -2,14 +2,14 @@ const modules =[
 	{name: "boloto", 
 					list:{
 						info: "Болото",
-						description: "В болоте вязнет техника и ебутся кикиморы",
+						description: "В болоте вязнет техника и комар в жопу кусает ",
 						range: ""
 					}
 	},
 	{name: 'forest',
 					list:{
 						info: "Лес",
-						description: "В лесу волки сношаются",
+						description: "В лесу темно и волки сношаются",
 						range: ""
 					}
 	},
@@ -30,21 +30,21 @@ const modules =[
 	{name: 'd30',
 					list:{
 						info: "Гаубица Д-30",
-						description: "Это крутая пушка",
+						description: "Это крутая пушка. Бьёт до конца карты",
 						range: ""
 					}
 	},
 	{name: 'minomet',
 					list:{
 						info: "120 миномет",
-						description: "отлично накрывает педиков",
+						description: "отлично накрывает и очень мобильное орудие",
 						range: ""
 					}
 	},
 	{name: 'grad',
 					list:{
 						info: "РСЗО Град",
-						description: "Стреляет по трём клетка",
+						description: "Стреляет по трём клеткам, ссутся даже медведи",
 						range: ""
 					}
 	},
