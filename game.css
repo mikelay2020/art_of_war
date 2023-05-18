@@ -81,26 +81,13 @@ body {
 	margin: 10px;
 }
 
-.board { 
+.land-board { 
 	margin-left: 200px;
 	position: absolute;
-	z-index: 5;
-}
-.unit-board{
-	margin-left: 200px;
-
-	position: relative;
-	z-index: 5;
+	/* z-index: 5; */
 }
 
 .array-land {
-	display: grid;
-	grid-template-columns: repeat(var(--array-greedX), 1fr);
-	grid-template-rows: repeat(var(--array-greedY), 1fr);
-	grid-gap: 0px;
-	flex-grow: 1;
-}
-.array-unit {
 	display: grid;
 	grid-template-columns: repeat(var(--array-greedX), 1fr);
 	grid-template-rows: repeat(var(--array-greedY), 1fr);
@@ -121,14 +108,6 @@ body:before {
 	user-select: none;
 }
 
-.block1 {
-	width: 40px;
-	height: 40px;
-	cursor:pointer;
-	/* при нажатии ничего не отображается */
-	user-select: none;
-}
-
 .block:hover {
 	/* при наведении увеличиваем яркость */
 	filter: brightness(150%);
@@ -137,18 +116,8 @@ body:before {
 	/* при нажатии уменьшаем яркость */
 	filter: brightness(40%);
 }
-
-.block1:hover {
-	/* при наведении увеличиваем яркость */
-	filter: brightness(150%);
-}
-.block1:active {
-	/* при нажатии уменьшаем яркость */
-	filter: brightness(40%);
-}
-
-.user-unit {
-	background: no-repeat center/120% url("./img/пушка3.jpg");
+.logo-picture{
+	background: no-repeat center/110% url("./img/заставка.jpg");
 }
 
 .trava {
@@ -174,7 +143,6 @@ body:before {
 }
 .mimo {
 	background: no-repeat center/130% url("./img/mimo.jpg");
-
 }
 
 .popal {

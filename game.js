@@ -6,29 +6,29 @@ const yCoordinate = 30
 document.documentElement.style.setProperty('--array-greedX', yCoordinate);
 document.documentElement.style.setProperty('--array-greedY', xCoordinate);
 //всавляем в класс arr-block
-const elem = document.getElementById('g15')
-const elem1 = document.getElementById('fr36')
+const elem = document.getElementById('landscape')
+const elem1 = document.getElementById('unit-area')
 
 
 // создаем DIV с ID fon
 for (let x = 0; x < xCoordinate; x++) {
 	for (let y = 0; y < yCoordinate; y++) {
-		const divEl = document.createElement('div');
-		divEl.classList.add('block');
-		divEl.setAttribute('id', 'x' + x + 'y' + y);
-		elem.append(divEl);
+		const divElement = document.createElement('div');
+		divElement.classList.add('block');
+		divElement.setAttribute('id', 'x' + x + 'y' + y);
+		elem.append(divElement);
 	}
 }
 
 // создаем DIV с ID unit 
-for (let x = 0; x < xCoordinate; x++) {
-	for (let y = 0; y < yCoordinate; y++) {
-		const divEl = document.createElement('div');
-		divEl.classList.add('block1');
-		divEl.setAttribute('id', 'i' + x + 'j' + y);
-		elem1.append(divEl);
-	}
-}
+// for (let x = 0; x < xCoordinate; x++) {
+// 	for (let y = 0; y < yCoordinate; y++) {
+// 		const divEl = document.createElement('div');
+// 		divEl.classList.add('block1');
+// 		divEl.setAttribute('id', 'i' + x + 'j' + y);
+// 		elem1.append(divEl);
+// 	}
+// }
 
 //создаем пустой массив ландшафта
 const map = [];
@@ -46,7 +46,7 @@ for (let i = 0; i < xCoordinate; i++) {
 		unitMap[i][j] = 0;
 	}
 }
-console.log(unitMap)
+// console.log(unitMap)
 
 // функция ландшафта amount - количество элементов,  lenghtArr - количество повтрорений,
 // rnd - разброс от начальной точки, classLandscape - выбор ландшафта land - выбор типа ландшафта
@@ -97,7 +97,7 @@ const gunsEnemy = function (unit, amount, gun) {
 		let y = Math.floor(Math.random() * yCoordinate + 18);
 		if (unitMap[x][y] === 0) {
 			unitMap[x][y] = unit;
-			document.getElementById('i' + x + 'j' + y).className += gun;
+			document.getElementById('x' + x + 'y' + y).className += gun;
 			k = k + 1;
 		}
 	} while (k < amount);
@@ -115,7 +115,7 @@ const gunsUser = function (unit, amount, gun) {
 		let y = Math.floor(Math.random() * yCoordinate - 18);
 		if (unitMap[x][y] === 0) {
 			unitMap[x][y] = unit;
-			document.getElementById('i' + x + 'j' + y).className += gun;
+			document.getElementById('x' + x + 'y' + y).className += gun;
 			k = k + 1;
 			for (let i = 0; i < xCoordinate; i++) {
 				for (let j = 0; j < yCoordinate - 15; j++) {
@@ -180,7 +180,6 @@ for (let i = 0; i < xCoordinate; i++) {
 };
 // console.log(userUnitCoordinates)
 const leftPanelUserInfo = function (unit) {
-
 	const elem4 = document.querySelector('.info-button');
 	const button = document.createElement('button');
 	button.type = 'button';
@@ -197,47 +196,73 @@ const leftPanelUserInfo = function (unit) {
 	button3.innerHTML = 'Отмена';
 	button3.className = 'button-cancel';
 	elem4.append(button3);
-
-	document.querySelector('.info-logo').className += unit;
+	document.querySelector('.logo-picture').classList.add(unit);
+	const elemString = ''+unit
+	const found = modules.find(element => element.name === elemString);
+	document.querySelector('.info-unit-name').textContent = ''+found.list.info;
+	document.querySelector('.info-unit-descript').textContent = ''+found.list.description;
+}
+const cleanSelectUserInfo = function () {
+	document.querySelector('.logo-picture').classList='logo-picture';
+	document.querySelector('.info-unit-name').textContent = 'Играй с умом';
+	document.querySelector('.info-unit-descript').textContent = 'выбери юнит и действуй';
+	const element = document.querySelector(".info-button");
+	while (element.firstChild) {
+		element.removeChild(element.firstChild);
+	  }
 
 }
-
-const changeSelectUserUnit = function () {
-	const element = document.getElementById("lp14");
-
-
-
+const changeSelectUserUnit = function (unit) {
+	const elem =document.getElementById('p2');
+	elem.classList='';
+	elem.classList.add(unit);
+	const elemString = ''+unit
+	const found = modules.find(element => element.name === elemString);
+	document.querySelector('.descript-mousemove').textContent = ''+found.list.description;
+	document.querySelector('.info-mousemove').textContent = ''+found.list.info;
+}
+const cleanSelectUserUnit = function (unit) {
+	document.getElementById('p2').classList='';
+	document.querySelector('.descript-mousemove').textContent = '';
+	document.querySelector('.info-mousemove').textContent = '';
+}
+const cleanSelectblock = function(){
+			// удаляем предыдущий select
+			document.getElementById(lastIdUnit).classList.remove("select")
+			//выставляем флаг что больше ничего не выбрано
+			isUserUnitEnable = false
+			//удаляем левое меню
 }
 
 let lastIdUnit = ''
 let lastClassUnit = ''
 const hash = ''
 let isUserUnitEnable = false
-const game = document.querySelector('.pole');
+const unitSelection = document.querySelector('.main');
 let gradFIre = false;
-game.addEventListener("click", function (e) {
-	if (e.target.closest('.array-unit')) {
-		if (!e.target.closest('.block1')) return;
+unitSelection.addEventListener("click", function (e) {
+	if (e.target.closest('.array-land')) {
+		if (!e.target.closest('.block')) return;
 		const selectBlock = e.target.id;
 		if (!isUserUnitEnable) {
 			if (hash == '' && e.target.closest('.d30')) {
 				console.log('Выбрана Гаубица')
 				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = ' d30'
+				lastClassUnit = 'd30'
 				lastIdUnit = selectBlock
 				isUserUnitEnable = true
 				leftPanelUserInfo(lastClassUnit)
 			} else if (hash == '' && e.target.closest('.minomet')) {
 				console.log('Выбран Миномет')
 				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = ' minomet'
+				lastClassUnit = 'minomet'
 				lastIdUnit = selectBlock
 				isUserUnitEnable = true
 				leftPanelUserInfo(lastClassUnit)
 			} else if (hash == '' && e.target.closest('.grad')) {
 				console.log('Выбран РСЗО Град')
 				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = ' grad'
+				lastClassUnit = 'grad'
 				lastIdUnit = selectBlock
 				isUserUnitEnable = true
 				leftPanelUserInfo(lastClassUnit)
@@ -252,14 +277,14 @@ game.addEventListener("click", function (e) {
 		//
 		//
 	} else if (e.target.closest('.button-fire')) {
-		document.querySelector('.array-unit').addEventListener('click', e => {
+		document.querySelector('.array-land').addEventListener('click', e => {
 			// нажата не блок
-			if (!e.target.closest('.block1')) return;
+			if (!e.target.closest('.block')) return;
 			//находим Id нажатого элемента
 			const enemyUnit = e.target.id;
 			//убираем xy
-			let ii = enemyUnit.match(/(?<=i)\d+/) | 0
-			let jj = enemyUnit.match(/(?<=j)\d+/) | 0
+			let ii = enemyUnit.match(/(?<=x)\d+/) | 0
+			let jj = enemyUnit.match(/(?<=y)\d+/) | 0
 			//создаем массив нажатого блока
 			const strToNumber = [];
 			strToNumber.push([ii, jj]);
@@ -279,6 +304,7 @@ game.addEventListener("click", function (e) {
 						}
 					})
 				});
+
 			}
 			//огонь по своим
 			for (i = 0; i < userUnitCoordinates.length; i++) {
@@ -299,13 +325,22 @@ game.addEventListener("click", function (e) {
 
 		}, { "once": true })
 	} else if (e.target.closest('.button-cancel')) {
-		// удаляем предыдущий select
-		document.getElementById(lastIdUnit).classList.remove("select")
-		//выставляем флаг что больше ничего не выбрано
-		isUserUnitEnable = false
-		//удаляем левое меню
-		changeSelectUserUnit()
-	}
+		cleanSelectblock();
+		cleanSelectUserInfo();
+		}
 })
 
-
+const landSelection = document.querySelector('.main');
+landSelection.addEventListener("mouseover", function (e) {
+	let target = e.target.closest('.block');
+	if(!target) return
+	let sliceSelect = e.target.classList
+	if(''+ sliceSelect.item(sliceSelect.length-1) === 'select'){
+		changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-2))
+	}else changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-1))
+})
+landSelection.addEventListener("mouseout", function (e) {
+	let target = e.target.closest('.block');
+	if(!target) return
+	 cleanSelectUserUnit()
+})
