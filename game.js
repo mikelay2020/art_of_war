@@ -103,9 +103,13 @@ const gunsEnemy = function (unit, amount, gun) {
 	} while (k < amount);
 }
 
-gunsEnemy(5, 4, " d30");
-gunsEnemy(6, 3, " minomet");
-gunsEnemy(7, 2, " grad");
+const d30=5;
+const minomet =6;
+const grad =7;
+
+gunsEnemy(d30, 4, " d30");
+gunsEnemy(minomet, 3, " minomet");
+gunsEnemy(grad, 2, " grad");
 
 // Функция создания орудий игрока unit - номер в массиве, amount - количество юнитов, gun - класс в CSS
 const gunsUser = function (unit, amount, gun) {
@@ -123,10 +127,10 @@ const gunsUser = function (unit, amount, gun) {
 					if (a == 5 || a === 6 || a == 7) {
 						for (let k = -2; k < 3; k++) {
 							for (let l = -2; l < 3; l++) {
-								if ((i + k) < xCoordinate && (j + l) < yCoordinate && (i + k + 1) > 0 && (j + l + 1) > 0) {
-									unitMap[i + k][j + l] = 1
+								// if ((i + k) < xCoordinate && (j + l) < yCoordinate && (i + k + 1) > 0 && (j + l + 1) > 0) {
+									// unitMap[i + k][j + l] = 1
 									unitMap[i][j] = a
-								}
+								// }
 							}
 						}
 					};
@@ -136,49 +140,28 @@ const gunsUser = function (unit, amount, gun) {
 	} while (k < amount);
 }
 
-gunsUser(5, 4, " d30");
-gunsUser(6, 3, " minomet");
-gunsUser(7, 2, " grad");
+gunsUser(d30, 4, " d30");
+gunsUser(minomet, 3, " minomet");
+gunsUser(grad, 2, " grad");
 
-// тень войны
-for (let i = 0; i < xCoordinate; i++) {
-	for (let j = 0; j < yCoordinate - 15; j++) {
-		if (unitMap[i][j] === 0) {
-			let cell = 'x' + i + 'y' + j;
-			document.getElementById(cell).classList.toggle("shadow");
-		}
-	}
-}
-for (let i = 0; i < xCoordinate; i++) {
-	for (let j = 15; j < yCoordinate; j++) {
-		let cell = 'x' + i + 'y' + j;
-		document.getElementById(cell).classList.toggle("shadow");
-	}
-}
+// // тень войны
+// for (let i = 0; i < xCoordinate; i++) {
+// 	for (let j = 0; j < yCoordinate - 15; j++) {
+// 		if (unitMap[i][j] === 0) {
+// 			let cell = 'x' + i + 'y' + j;
+// 			document.getElementById(cell).classList.toggle("shadow");
+// 		}
+// 	}
+// }
+// for (let i = 0; i < xCoordinate; i++) {
+// 	for (let j = 15; j < yCoordinate; j++) {
+// 		let cell = 'x' + i + 'y' + j;
+// 		document.getElementById(cell).classList.toggle("shadow");
+// 	}
+// }
 
-//создаем массив с координатами врага
-const enemyUnitCoordinates = [];
-for (let i = 0; i < xCoordinate; i++) {
-	for (let j = 18; j < yCoordinate; j++) {
-		let a = unitMap[i][j];
-		if (a == 5 || a === 6 || a == 7) {
-			enemyUnitCoordinates.push([i, j]);
-		};
-	};
-};
-//  console.log(enemyUnitCoordinates)
 
-//создаем массив с координатами игрока
-const userUnitCoordinates = [];
-for (let i = 0; i < xCoordinate; i++) {
-	for (let j = 0; j < yCoordinate - 18; j++) {
-		let a = unitMap[i][j];
-		if (a == 5 || a === 6 || a == 7) {
-			userUnitCoordinates.push([i, j]);
-		};
-	};
-};
-// console.log(userUnitCoordinates)
+
 const leftPanelUserInfo = function (unit) {
 	const elem4 = document.querySelector('.info-button');
 	const button = document.createElement('button');
@@ -221,18 +204,26 @@ const changeSelectUserUnit = function (unit) {
 	document.querySelector('.descript-mousemove').textContent = ''+found.list.description;
 	document.querySelector('.info-mousemove').textContent = ''+found.list.info;
 }
-const cleanSelectUserUnit = function (unit) {
+const cleanSelectUserUnit = function () {
 	document.getElementById('p2').classList='';
 	document.querySelector('.descript-mousemove').textContent = '';
 	document.querySelector('.info-mousemove').textContent = '';
 }
-const cleanSelectblock = function(){
+const cleanSelectBlock = function(){
 			// удаляем предыдущий select
 			document.getElementById(lastIdUnit).classList.remove("select")
 			//выставляем флаг что больше ничего не выбрано
 			isUserUnitEnable = false
 			//удаляем левое меню
 }
+const cleanMoveBlock = function(){
+	const element = document.querySelectorAll(".move");
+	for (let el of element){
+		el.classList.remove('move');
+
+	}
+}
+
 
 let lastIdUnit = ''
 let lastClassUnit = ''
@@ -270,13 +261,68 @@ unitSelection.addEventListener("click", function (e) {
 			}
 		}
 	} else if (e.target.closest('.button-move')) {
-		console.log('move')
-		//
-		//тут будет код для движения
-		//
-		//
-		//
+					//убираем xy
+			 const i = lastIdUnit.match(/(?<=x)\d+/) | 0
+			 const j = lastIdUnit.match(/(?<=y)\d+/) | 0
+			 document.getElementById(lastIdUnit).classList.toggle("move");
+		
+		for (let x = -1; x < 2; x++) {
+			let cellX = x + i
+			for (let y = -1; y < 2; y++) {
+				let cellY = y + j;
+				if (cellX >= 0  && cellY >= 0 && cellX < xCoordinate &&cellY <yCoordinate) {
+					const elem = document.getElementById('x' + cellX + 'y' + cellY)
+					const chek1=elem.classList.contains('d30')
+					const chek2=elem.classList.contains('minomet')
+					const chek3=elem.classList.contains('grad')
+					const chek4=elem.classList.contains('mimo')
+					const chek5=elem.classList.contains('popal')
+					if(chek1 !== true && chek2 !== true && chek3 !== true && chek4 !== true && chek5 !== true){
+							elem.classList.add("move");
+					}
+				}
+			}
+		}
+		document.querySelector('.array-land').addEventListener('click', e => {
+			if (!e.target.closest('.move')) return;
+			const moveCoordinate = e.target.id;
+			iDel=moveCoordinate.match(/(?<=x)\d+/) | 0
+			jDel =moveCoordinate.match(/(?<=y)\d+/) | 0
+			document.getElementById(lastIdUnit).classList.remove(lastClassUnit)
+			document.getElementById(moveCoordinate).classList.add(lastClassUnit);
+			unitMap[i][j]=0;
+			if (lastClassUnit === 'grad'){
+				unitMap[iDel][jDel]=grad;
+			} else if ( lastClassUnit === 'minomet'){
+				unitMap[iDel][jDel]=minomet;
+			} else if (lastClassUnit === 'd30'){
+				unitMap[iDel][jDel]=d30;
+			} 
+
+		}, { "once": true }
+		);
+
 	} else if (e.target.closest('.button-fire')) {
+		//создаем массив с координатами врага
+		const enemyUnitCoordinates = [];
+		for (let i = 0; i < xCoordinate; i++) {
+			for (let j = 18; j < yCoordinate; j++) {
+				let a = unitMap[i][j];
+				if (a == 5 || a === 6 || a == 7) {
+					enemyUnitCoordinates.push([i, j]);
+				};
+			};
+		};
+		//создаем массив с координатами игрока
+		const userUnitCoordinates = [];
+		for (let i = 0; i < xCoordinate; i++) {
+			for (let j = 0; j < yCoordinate - 18; j++) {
+				let a = unitMap[i][j];
+				if (a == 5 || a === 6 || a == 7) {
+					userUnitCoordinates.push([i, j]);
+				};
+			};
+		};
 		document.querySelector('.array-land').addEventListener('click', e => {
 			// нажата не блок
 			if (!e.target.closest('.block')) return;
@@ -300,6 +346,10 @@ unitSelection.addEventListener("click", function (e) {
 							document.getElementById(enemyUnit).classList.toggle("popal");
 							//удаляем найденый элемент
 							enemyUnitCoordinates.splice(enemyUnitCoordinates.indexOf(x), 1);
+							const delUnitClass = document.getElementById(enemyUnit).classList
+							if (delUnitClass.contains('grad'))document.getElementById(enemyUnit).classList.remove('grad')
+							else if(delUnitClass.contains('d30'))document.getElementById(enemyUnit).classList.remove('d30')
+							else if(delUnitClass.contains('minomet'))document.getElementById(enemyUnit).classList.remove('minomet')
 							if (enemyUnitCoordinates.length === 0) return alert('game over')
 						}
 					})
@@ -317,28 +367,38 @@ unitSelection.addEventListener("click", function (e) {
 							document.getElementById(enemyUnit).classList.toggle("popal");
 							//удаляем найденый элемент
 							userUnitCoordinates.splice(userUnitCoordinates.indexOf(x), 1);
+							const delUnitClass = document.getElementById(enemyUnit).classList
+							if (delUnitClass.contains('grad'))document.getElementById(enemyUnit).classList.remove('grad')
+							else if(delUnitClass.contains('d30'))document.getElementById(enemyUnit).classList.remove('d30')
+							else if(delUnitClass.contains('minomet'))document.getElementById(enemyUnit).classList.remove('minomet')
 							if (userUnitCoordinates.length === 0) return alert('game over')
 						}
 					})
 				});
 			}
 
+		
 		}, { "once": true })
 	} else if (e.target.closest('.button-cancel')) {
-		cleanSelectblock();
+		cleanSelectBlock();
 		cleanSelectUserInfo();
-		}
-})
+		cleanMoveBlock();
+	}
+	})
 
 const landSelection = document.querySelector('.main');
 landSelection.addEventListener("mouseover", function (e) {
 	let target = e.target.closest('.block');
 	if(!target) return
 	let sliceSelect = e.target.classList
-	if(''+ sliceSelect.item(sliceSelect.length-1) === 'select'){
+	if(sliceSelect.item(sliceSelect.length-1) === 'move'){
+		if(sliceSelect.item(sliceSelect.length-1) === 'move' && sliceSelect.item(sliceSelect.length-2) === 'select'){
+			changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-3))
+		}else changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-2))
+	} else if(sliceSelect.item(sliceSelect.length-1) === 'select'){
 		changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-2))
-	}else changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-1))
-})
+	} else changeSelectUserUnit(''+ sliceSelect.item(sliceSelect.length-1))
+	})
 landSelection.addEventListener("mouseout", function (e) {
 	let target = e.target.closest('.block');
 	if(!target) return
