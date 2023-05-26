@@ -225,8 +225,11 @@ const cleanMoveBlock = function(){
 }
 
 
+
 let lastIdUnit = ''
 let lastClassUnit = ''
+let moveCoordinate =''
+
 const hash = ''
 let isUserUnitEnable = false
 const unitSelection = document.querySelector('.main');
@@ -235,7 +238,7 @@ unitSelection.addEventListener("click", function (e) {
 	if (e.target.closest('.array-land')) {
 		if (!e.target.closest('.block')) return;
 		const selectBlock = e.target.id;
-		if (!isUserUnitEnable) {
+		if (!isUserUnitEnable && !moveCoordinate) {
 			if (hash == '' && e.target.closest('.d30')) {
 				console.log('Выбрана Гаубица')
 				document.getElementById(selectBlock).classList.toggle("select");
@@ -259,7 +262,9 @@ unitSelection.addEventListener("click", function (e) {
 				leftPanelUserInfo(lastClassUnit)
 				gradFire = true;
 			}
+
 		}
+		moveCoordinate=''
 	} else if (e.target.closest('.button-move')) {
 					//убираем xy
 			 const i = lastIdUnit.match(/(?<=x)\d+/) | 0
@@ -285,11 +290,16 @@ unitSelection.addEventListener("click", function (e) {
 		}
 		document.querySelector('.array-land').addEventListener('click', e => {
 			if (!e.target.closest('.move')) return;
-			const moveCoordinate = e.target.id;
+			moveCoordinate = e.target.id;
 			iDel=moveCoordinate.match(/(?<=x)\d+/) | 0
 			jDel =moveCoordinate.match(/(?<=y)\d+/) | 0
 			document.getElementById(lastIdUnit).classList.remove(lastClassUnit)
 			document.getElementById(moveCoordinate).classList.add(lastClassUnit);
+
+			cleanSelectBlock();
+			cleanSelectUserInfo();
+			cleanMoveBlock();
+
 			unitMap[i][j]=0;
 			if (lastClassUnit === 'grad'){
 				unitMap[iDel][jDel]=grad;
@@ -299,7 +309,7 @@ unitSelection.addEventListener("click", function (e) {
 				unitMap[iDel][jDel]=d30;
 			} 
 
-		}, { "once": true }
+		}, { "once": false }
 		);
 
 	} else if (e.target.closest('.button-fire')) {
@@ -376,7 +386,8 @@ unitSelection.addEventListener("click", function (e) {
 					})
 				});
 			}
-
+			cleanSelectBlock();
+			cleanSelectUserInfo();
 		
 		}, { "once": true })
 	} else if (e.target.closest('.button-cancel')) {
@@ -385,6 +396,8 @@ unitSelection.addEventListener("click", function (e) {
 		cleanMoveBlock();
 	}
 	})
+
+
 
 const landSelection = document.querySelector('.main');
 landSelection.addEventListener("mouseover", function (e) {
