@@ -5,10 +5,6 @@ const yCoordinate = 30
 // передаем в CSS переменные для Grid-ов
 document.documentElement.style.setProperty('--array-greedX', yCoordinate);
 document.documentElement.style.setProperty('--array-greedY', xCoordinate);
-//всавляем в класс arr-block
-const elem = document.getElementById('landscape')
-const elem1 = document.getElementById('unit-area')
-
 
 // создаем DIV с ID fon
 for (let x = 0; x < xCoordinate; x++) {
@@ -16,19 +12,9 @@ for (let x = 0; x < xCoordinate; x++) {
 		const divElement = document.createElement('div');
 		divElement.classList.add('block');
 		divElement.setAttribute('id', 'x' + x + 'y' + y);
-		elem.append(divElement);
+		document.getElementById('landscape').append(divElement);
 	}
 }
-
-// создаем DIV с ID unit 
-// for (let x = 0; x < xCoordinate; x++) {
-// 	for (let y = 0; y < yCoordinate; y++) {
-// 		const divEl = document.createElement('div');
-// 		divEl.classList.add('block1');
-// 		divEl.setAttribute('id', 'i' + x + 'j' + y);
-// 		elem1.append(divEl);
-// 	}
-// }
 
 //создаем пустой массив ландшафта
 const map = [];
@@ -86,80 +72,9 @@ for (let i = 0; i < xCoordinate; i++) {
 		}
 	}
 }
-
-// console.log(map)
-
-// Функция создания орудий соперника unit - номер в массиве, amount - количество юнитов, gun - класс в CSS
-const gunsEnemy = function (unit, amount, gun) {
-	let k = 0;
-	do {
-		let x = Math.floor(Math.random() * xCoordinate);
-		let y = Math.floor(Math.random() * yCoordinate + 18);
-		if (unitMap[x][y] === 0) {
-			unitMap[x][y] = unit;
-			document.getElementById('x' + x + 'y' + y).className += gun;
-			k = k + 1;
-		}
-	} while (k < amount);
-}
-
-const d30=5;
-const minomet =6;
-const grad =7;
-
-gunsEnemy(d30, 4, " d30");
-gunsEnemy(minomet, 3, " minomet");
-gunsEnemy(grad, 2, " grad");
-
-// Функция создания орудий игрока unit - номер в массиве, amount - количество юнитов, gun - класс в CSS
-const gunsUser = function (unit, amount, gun) {
-	let k = 0;
-	do {
-		let x = Math.floor(Math.random() * xCoordinate);
-		let y = Math.floor(Math.random() * yCoordinate - 18);
-		if (unitMap[x][y] === 0) {
-			unitMap[x][y] = unit;
-			document.getElementById('x' + x + 'y' + y).className += gun;
-			k = k + 1;
-			for (let i = 0; i < xCoordinate; i++) {
-				for (let j = 0; j < yCoordinate - 15; j++) {
-					let a = unitMap[i][j];
-					if (a == 5 || a === 6 || a == 7) {
-						for (let k = -2; k < 3; k++) {
-							for (let l = -2; l < 3; l++) {
-								// if ((i + k) < xCoordinate && (j + l) < yCoordinate && (i + k + 1) > 0 && (j + l + 1) > 0) {
-									// unitMap[i + k][j + l] = 1
-									unitMap[i][j] = a
-								// }
-							}
-						}
-					};
-				};
-			};
-		}
-	} while (k < amount);
-}
-
-gunsUser(d30, 4, " d30");
-gunsUser(minomet, 3, " minomet");
-gunsUser(grad, 2, " grad");
-
-// // тень войны
-// for (let i = 0; i < xCoordinate; i++) {
-// 	for (let j = 0; j < yCoordinate - 15; j++) {
-// 		if (unitMap[i][j] === 0) {
-// 			let cell = 'x' + i + 'y' + j;
-// 			document.getElementById(cell).classList.toggle("shadow");
-// 		}
-// 	}
-// }
-// for (let i = 0; i < xCoordinate; i++) {
-// 	for (let j = 15; j < yCoordinate; j++) {
-// 		let cell = 'x' + i + 'y' + j;
-// 		document.getElementById(cell).classList.toggle("shadow");
-// 	}
-// }
-
+// выод юнитов на карту и в массив
+gunsUser();
+gunsEnemy()
 
 
 const leftPanelUserInfo = function (unit) {
@@ -181,7 +96,7 @@ const leftPanelUserInfo = function (unit) {
 	elem4.append(button3);
 	document.querySelector('.logo-picture').classList.add(unit);
 	const elemString = ''+unit
-	const found = modules.find(element => element.name === elemString);
+	const found = modulesUserUnit.find(element => element.id === elemString);
 	document.querySelector('.info-unit-name').textContent = ''+found.list.info;
 	document.querySelector('.info-unit-descript').textContent = ''+found.list.description;
 }
@@ -199,8 +114,7 @@ const changeSelectUserUnit = function (unit) {
 	const elem =document.getElementById('p2');
 	elem.classList='';
 	elem.classList.add(unit);
-	const elemString = ''+unit
-	const found = modules.find(element => element.name === elemString);
+	const found = modules.find(element => element.id === unit);
 	document.querySelector('.descript-mousemove').textContent = ''+found.list.description;
 	document.querySelector('.info-mousemove').textContent = ''+found.list.info;
 }
@@ -214,8 +128,8 @@ const cleanSelectBlock = function(){
 			document.getElementById(lastIdUnit).classList.remove("select")
 			//выставляем флаг что больше ничего не выбрано
 			isUserUnitEnable = false
-			//удаляем левое меню
-}
+		}
+
 const cleanMoveBlock = function(){
 	const element = document.querySelectorAll(".move");
 	for (let el of element){
@@ -230,46 +144,30 @@ let lastIdUnit = ''
 let lastClassUnit = ''
 let moveCoordinate =''
 
-const hash = ''
 let isUserUnitEnable = false
-const unitSelection = document.querySelector('.main');
+const landSelection = document.querySelector('.main');
 let gradFIre = false;
-unitSelection.addEventListener("click", function (e) {
+landSelection.addEventListener("click", function (e) {
 	if (e.target.closest('.array-land')) {
 		if (!e.target.closest('.block')) return;
 		const selectBlock = e.target.id;
-		if (!isUserUnitEnable && !moveCoordinate) {
-			if (hash == '' && e.target.closest('.d30')) {
-				console.log('Выбрана Гаубица')
-				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = 'd30'
-				lastIdUnit = selectBlock
-				isUserUnitEnable = true
-				leftPanelUserInfo(lastClassUnit)
-			} else if (hash == '' && e.target.closest('.minomet')) {
-				console.log('Выбран Миномет')
-				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = 'minomet'
-				lastIdUnit = selectBlock
-				isUserUnitEnable = true
-				leftPanelUserInfo(lastClassUnit)
-			} else if (hash == '' && e.target.closest('.grad')) {
-				console.log('Выбран РСЗО Град')
-				document.getElementById(selectBlock).classList.toggle("select");
-				lastClassUnit = 'grad'
-				lastIdUnit = selectBlock
-				isUserUnitEnable = true
-				leftPanelUserInfo(lastClassUnit)
-				gradFire = true;
-			}
+		const found = modules.find(element => element.id === e.target.classList[2]);
 
+		if (!isUserUnitEnable && !moveCoordinate) {
+				console.log('Выбран ',found.list.info)
+				document.getElementById(selectBlock).classList.add("select");
+				lastClassUnit = e.target.classList[2]
+				lastIdUnit = selectBlock
+				isUserUnitEnable = true
+				leftPanelUserInfo(lastClassUnit)
+	
 		}
 		moveCoordinate=''
 	} else if (e.target.closest('.button-move')) {
 					//убираем xy
 			 const i = lastIdUnit.match(/(?<=x)\d+/) | 0
 			 const j = lastIdUnit.match(/(?<=y)\d+/) | 0
-			 document.getElementById(lastIdUnit).classList.toggle("move");
+			 document.getElementById(lastIdUnit).classList.add("move");
 		
 		for (let x = -1; x < 2; x++) {
 			let cellX = x + i
@@ -277,13 +175,8 @@ unitSelection.addEventListener("click", function (e) {
 				let cellY = y + j;
 				if (cellX >= 0  && cellY >= 0 && cellX < xCoordinate &&cellY <yCoordinate) {
 					const elem = document.getElementById('x' + cellX + 'y' + cellY)
-					const chek1=elem.classList.contains('d30')
-					const chek2=elem.classList.contains('minomet')
-					const chek3=elem.classList.contains('grad')
-					const chek4=elem.classList.contains('mimo')
-					const chek5=elem.classList.contains('popal')
-					if(chek1 !== true && chek2 !== true && chek3 !== true && chek4 !== true && chek5 !== true){
-							elem.classList.add("move");
+					if (elem.classList[2] === undefined){
+						elem.classList.add("move");
 					}
 				}
 			}
@@ -291,23 +184,23 @@ unitSelection.addEventListener("click", function (e) {
 		document.querySelector('.array-land').addEventListener('click', e => {
 			if (!e.target.closest('.move')) return;
 			moveCoordinate = e.target.id;
+			const i = lastIdUnit.match(/(?<=x)\d+/) | 0
+			const j = lastIdUnit.match(/(?<=y)\d+/) | 0
 			iDel=moveCoordinate.match(/(?<=x)\d+/) | 0
 			jDel =moveCoordinate.match(/(?<=y)\d+/) | 0
 			document.getElementById(lastIdUnit).classList.remove(lastClassUnit)
 			document.getElementById(moveCoordinate).classList.add(lastClassUnit);
+			const found = modulesUserUnit.find(element => element.id === lastClassUnit);
+			console.log(found)
 
+			unitMap[i][j]=0;
+			unitMap[iDel][jDel]=found.list.arrayId
 			cleanSelectBlock();
 			cleanSelectUserInfo();
 			cleanMoveBlock();
 
-			unitMap[i][j]=0;
-			if (lastClassUnit === 'grad'){
-				unitMap[iDel][jDel]=grad;
-			} else if ( lastClassUnit === 'minomet'){
-				unitMap[iDel][jDel]=minomet;
-			} else if (lastClassUnit === 'd30'){
-				unitMap[iDel][jDel]=d30;
-			} 
+
+console.log(unitMap)
 
 		}, { "once": false }
 		);
@@ -399,7 +292,6 @@ unitSelection.addEventListener("click", function (e) {
 
 
 
-const landSelection = document.querySelector('.main');
 landSelection.addEventListener("mouseover", function (e) {
 	let target = e.target.closest('.block');
 	if(!target) return
