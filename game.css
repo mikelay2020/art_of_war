@@ -95,10 +95,6 @@ body {
 	flex-grow: 1;
 }
 
-body:before {
-	content: "";
-	padding-top: 100%;
-}
 
 .block {
 	width: 40px;
