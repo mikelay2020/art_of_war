@@ -4,7 +4,7 @@ const modulesUserUnit = [
 		list: {
 			info: "Гаубица Д-30",
 			description: "Это крутая пушка. Бьёт до конца карты",
-			arrayId:2
+			arrayId: 2
 
 		},
 		action: {
@@ -18,7 +18,7 @@ const modulesUserUnit = [
 		list: {
 			info: "Гаубица Д-30",
 			description: "Это крутая пушка. Бьёт до конца карты",
-			arrayId:2
+			arrayId: 2
 		},
 		action: {
 			move: 1,
@@ -31,10 +31,10 @@ const modulesUserUnit = [
 		list: {
 			info: "120 миномет",
 			description: "отлично накрывает и очень мобильное орудие",
-			arrayId:3
+			arrayId: 3
 		},
 		action: {
-			move: 1,
+			move: 2,
 			reload: 1,
 			fire: 1
 		}
@@ -44,10 +44,10 @@ const modulesUserUnit = [
 		list: {
 			info: "120 миномет",
 			description: "отлично накрывает и очень мобильное орудие",
-			arrayId:3
+			arrayId: 3
 		},
 		action: {
-			move: 1,
+			move: 2,
 			reload: 1,
 			fire: 1
 		}
@@ -57,11 +57,11 @@ const modulesUserUnit = [
 		list: {
 			info: "РСЗО Град",
 			description: "Стреляет по трём клеткам, ссутся даже медведи",
-			arrayId:4
+			arrayId: 4
 		},
 		action: {
-			move: 1,
-			reload: 1,
+			move: 3,
+			reload: 3,
 			fire: 1
 		}
 	},
@@ -70,11 +70,11 @@ const modulesUserUnit = [
 		list: {
 			info: "РСЗО Град",
 			description: "Стреляет по трём клеткам, ссутся даже медведи",
-			arrayId:4
+			arrayId: 4
 		},
 		action: {
-			move: 1,
-			reload: 1,
+			move: 3,
+			reload: 3,
 			fire: 1
 		}
 	}
@@ -86,7 +86,7 @@ const modulesEnemyUnit = [
 		list: {
 			info: "Гаубица Д-30",
 			description: "Это крутая пушка. Бьёт до конца карты",
-			arrayId:5
+			arrayId: 5
 
 		},
 		action: {
@@ -100,7 +100,7 @@ const modulesEnemyUnit = [
 		list: {
 			info: "Гаубица Д-30",
 			description: "Это крутая пушка. Бьёт до конца карты",
-			arrayId:5
+			arrayId: 5
 		},
 		action: {
 			move: 1,
@@ -113,7 +113,7 @@ const modulesEnemyUnit = [
 		list: {
 			info: "120 миномет",
 			description: "отлично накрывает и очень мобильное орудие",
-			arrayId:6
+			arrayId: 6
 		},
 		action: {
 			move: 1,
@@ -126,7 +126,7 @@ const modulesEnemyUnit = [
 		list: {
 			info: "120 миномет",
 			description: "отлично накрывает и очень мобильное орудие",
-			arrayId:5
+			arrayId: 5
 		},
 		action: {
 			move: 1,
@@ -139,7 +139,7 @@ const modulesEnemyUnit = [
 		list: {
 			info: "РСЗО Град",
 			description: "Стреляет по трём клеткам, ссутся даже медведи",
-			arrayId:6
+			arrayId: 6
 		},
 		action: {
 			move: 1,
@@ -152,7 +152,7 @@ const modulesEnemyUnit = [
 		list: {
 			info: "РСЗО Град",
 			description: "Стреляет по трём клеткам, ссутся даже медведи",
-			arrayId:6
+			arrayId: 6
 		},
 		action: {
 			move: 1,
@@ -163,7 +163,7 @@ const modulesEnemyUnit = [
 ]
 
 
-const modulesLandscape=[	
+const modulesLandscape = [
 	{
 		id: 'shadow',
 		list: {
@@ -197,7 +197,7 @@ const modulesLandscape=[
 		}
 	}
 ]
-const modulesDamage =[
+const modulesDamage = [
 	{
 		id: 'mimo',
 		list: {
@@ -221,35 +221,35 @@ const modules = [...modulesUserUnit, ...modulesLandscape, ...modulesEnemyUnit, .
 
 
 const gunsUser = function () {
-	let k=0;
-	modulesUserUnit.forEach(un=>{
-			while(k < 1 ){
-				let x = Math.floor(Math.random() * xCoordinate);
-				let y = Math.floor(Math.random() * yCoordinate - 18);
-				if (unitMap[x][y] === 0) {
-					unitMap[x][y] = un.list.arrayId;
-					document.getElementById('x' + x + 'y' + y).classList.add(''+un.id);
-					k=1
-				}
+	let k = 0;
+	modulesUserUnit.forEach(un => {
+		while (k < 1) {
+			let x = Math.floor(Math.random() * xCoordinate);
+			let y = Math.floor(Math.random() * yCoordinate - 18);
+			if (unitMap[x][y] === 0) {
+				unitMap[x][y] = un.list.arrayId;
+				document.getElementById('x' + x + 'y' + y).classList.add('' + un.id);
+				k = 1
 			}
-			k=0
-		})
+		}
+		k = 0
+	})
 }
 
 const gunsEnemy = function () {
-	let k=0;
-	modulesEnemyUnit.forEach(un=>{
-			while(k < 1 ){
-				let x = Math.floor(Math.random() * xCoordinate);
-				let y = Math.floor(Math.random() * yCoordinate + 18);
-				if (unitMap[x][y] === 0) {
-					unitMap[x][y] = un.list.arrayId;
-					document.getElementById('x' + x + 'y' + y).classList.add(''+un.id);
-					k=1
-				}
+	let k = 0;
+	modulesEnemyUnit.forEach(un => {
+		while (k < 1) {
+			let x = Math.floor(Math.random() * xCoordinate);
+			let y = Math.floor(Math.random() * yCoordinate + 18);
+			if (unitMap[x][y] === 0) {
+				unitMap[x][y] = un.list.arrayId;
+				document.getElementById('x' + x + 'y' + y).classList.add('' + un.id);
+				k = 1
 			}
-			k=0
-		})
+		}
+		k = 0
+	})
 }
 
 
