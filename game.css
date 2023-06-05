@@ -95,10 +95,6 @@ body {
 	flex-grow: 1;
 }
 
-body:before {
-	content: "";
-	padding-top: 100%;
-}
 
 .block {
 	width: 40px;
@@ -131,14 +127,14 @@ body:before {
 .forest {
 	background: no-repeat center/130% url("./img/les.jpg");
 }
-.d30 {
+.User_d30_1, .User_d30_2, .Enemy_d30_1, .Enemy_d30_2  {
 	background: no-repeat center/130% url("./img/d30.jpg");
 }
-.minomet {
+.User_minomet_1, .User_minomet_2, .Enemy_minomet_1, .Enemy_minomet_2 {
 	background: no-repeat center/130% url("./img/minomet.jpg");
 }
 
-.grad {
+.User_grad_1, .User_grad_2, .Enemy_grad_1, .Enemy_grad_2 {
 	background: no-repeat center/130% url("./img/grad.jpg");
 }
 .mimo {
