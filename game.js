@@ -151,13 +151,34 @@ const cleanMoveBlock = function () {
 		el.classList.remove('move');
 	}
 }
-
 let lastIdUnit = '';
 let lastClassUnit = '';
 let moveCoordinate = '';
 let fireCoordinate = '';
 let isUserUnitEnable = false;
+let isGradSelect = false;
 
+const enemyUnitCoordinates = [];
+for (let i = 0; i < xCoordinate; i++) {
+	for (let j = 18; j < yCoordinate; j++) {
+		let a = unitMap[i][j];
+		if (a == 5 || a === 6 || a == 7) {
+			enemyUnitCoordinates.push([i, j]);
+		};
+	};
+};
+//создаем массив с координатами игрока
+const userUnitCoordinates = [];
+for (let i = 0; i < xCoordinate; i++) {
+	for (let j = 0; j < yCoordinate - 18; j++) {
+		let a = unitMap[i][j];
+		if (a == 2 || a === 3 || a == 4) {
+			userUnitCoordinates.push([i, j]);
+		};
+	};
+};
+
+// select выбор юнита
 const landSelection = document.querySelector('.main');
 landSelection.addEventListener("click", function (e) {
 	if (e.target.closest('.array-land')) {
@@ -168,12 +189,15 @@ landSelection.addEventListener("click", function (e) {
 			if (!moveCoordinate && !fireCoordinate) {
 				modulesUserUnit.find(element => {
 					if (e.target.classList[2] === element.id) {
+						if (element.id === 'User_grad_2' && element.id === 'User_grad_1') {
+							isGradSelect = true;
+						}
+						console.log(element.id)
 						document.getElementById(selectBlock).classList.add("select");
 						lastClassUnit = e.target.classList[2];
 						lastIdUnit = selectBlock;
 						isUserUnitEnable = true;
 						leftPanelUserInfo(lastClassUnit);
-						lastSelectBlock = selectBlock;
 					}
 				});
 			}
@@ -226,28 +250,8 @@ landSelection.addEventListener("click", function (e) {
 
 	} else if (e.target.closest('.button-fire')) {
 		const found = modulesUserUnit.find(element => element.id === lastClassUnit);
+
 		if (found.action.fire !== 0) {
-			//создаем массив с координатами врага
-			const enemyUnitCoordinates = [];
-			for (let i = 0; i < xCoordinate; i++) {
-				for (let j = 18; j < yCoordinate; j++) {
-					let a = unitMap[i][j];
-					if (a == 4 || a === 5 || a == 6) {
-						enemyUnitCoordinates.push([i, j]);
-					};
-				};
-			};
-			//создаем массив с координатами игрока
-			const userUnitCoordinates = [];
-			for (let i = 0; i < xCoordinate; i++) {
-				for (let j = 0; j < yCoordinate - 18; j++) {
-					let a = unitMap[i][j];
-					if (a == 2 || a === 3 || a == 4) {
-						userUnitCoordinates.push([i, j]);
-					};
-				};
-			};
-			console.log(userUnitCoordinates)
 			document.querySelector('.array-land').addEventListener('click', e => {
 				// нажата не блок
 				if (!e.target.closest('.block')) return;
@@ -260,6 +264,10 @@ landSelection.addEventListener("click", function (e) {
 				//создаем массив нажатого блока
 				const strToNumber = [];
 				strToNumber.push([ii, jj]);
+
+				if (isGradSelect) {
+
+				}
 				if (unitMap[ii][jj] <= 1) document.getElementById(enemyUnit).classList.add("mimo");
 
 
@@ -277,6 +285,7 @@ landSelection.addEventListener("click", function (e) {
 								const delUnitClass = document.getElementById(enemyUnit).classList[2];
 								document.getElementById(enemyUnit).classList.remove(delUnitClass);
 								if (enemyUnitCoordinates.length === 0) return alert('game over');
+								console.log(enemyUnitCoordinates)
 							}
 						})
 					});
@@ -340,4 +349,4 @@ landSelection.addEventListener("mouseout", function (e) {
 	let target = e.target.closest('.block');
 	if (!target) return
 	cleanSelectUserUnit();
-})
+}) 
