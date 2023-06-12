@@ -76,6 +76,7 @@ gunsUser();
 gunsEnemy();
 
 
+
 const leftPanelUserInfo = function (unit) {
 	const element = document.querySelector('.info-button');
 	const buttonMove = document.createElement('button');
@@ -189,10 +190,10 @@ landSelection.addEventListener("click", function (e) {
 			if (!moveCoordinate && !fireCoordinate) {
 				modulesUserUnit.find(element => {
 					if (e.target.classList[2] === element.id) {
-						if (element.id === 'User_grad_2' && element.id === 'User_grad_1') {
+						if (element.id === 'User_grad_2' || element.id === 'User_grad_1') {
 							isGradSelect = true;
 						}
-						console.log(element.id)
+						// console.log(element.id)
 						document.getElementById(selectBlock).classList.add("select");
 						lastClassUnit = e.target.classList[2];
 						lastIdUnit = selectBlock;
@@ -252,72 +253,160 @@ landSelection.addEventListener("click", function (e) {
 		const found = modulesUserUnit.find(element => element.id === lastClassUnit);
 
 		if (found.action.fire !== 0) {
-			document.querySelector('.array-land').addEventListener('click', e => {
-				// нажата не блок
-				if (!e.target.closest('.block')) return;
-				//находим Id нажатого элемента
-				const enemyUnit = e.target.id;
-				console.log('coordinte ', enemyUnit);
-				//убираем xy
-				let ii = enemyUnit.match(/(?<=x)\d+/) | 0;
-				let jj = enemyUnit.match(/(?<=y)\d+/) | 0;
-				//создаем массив нажатого блока
-				const strToNumber = [];
-				strToNumber.push([ii, jj]);
-
-				if (isGradSelect) {
-
-				}
-				if (unitMap[ii][jj] <= 1) document.getElementById(enemyUnit).classList.add("mimo");
+			if (isGradSelect) {
+				document.querySelector('.array-land').addEventListener('click', e => {
+					// нажата не блок
+					if (!e.target.closest('.block')) return;
+					//находим Id нажатого элемента
+					const enemyUnit = e.target.id;
+					console.log(map)
+					let ii = enemyUnit.match(/(?<=x)\d+/) | 0;
+					let jj = enemyUnit.match(/(?<=y)\d+/) | 0;
 
 
-				//огонь по юнитам противника
-				for (i = 0; i < enemyUnitCoordinates.length; i++) {
-					enemyUnitCoordinates.forEach(x => {
-						// проверяем совпадение по занечению в 2х массивах
-						strToNumber.forEach(w => {
-							if (x[i] == w[0] && x[i + 1] == w[1]) {
-								console.log('Boom!');
-								//меняем фон
-								document.getElementById(enemyUnit).classList.add("popal");
-								//удаляем найденый элемент
-								enemyUnitCoordinates.splice(enemyUnitCoordinates.indexOf(x), 1);
-								const delUnitClass = document.getElementById(enemyUnit).classList[2];
-								document.getElementById(enemyUnit).classList.remove(delUnitClass);
-								if (enemyUnitCoordinates.length === 0) return alert('game over');
-								console.log(enemyUnitCoordinates)
-							}
-						})
-					});
+					let max = 3;
+					let min = -3
+					let count = 0;
+					//создаем массив нажатого блока
+					const strToNumber = [];
+					do {
+						let x1 = Math.floor(Math.random() * (max - min)) + min;
 
-				}
-				//огонь по своим
-				for (i = 0; i < userUnitCoordinates.length; i++) {
-					userUnitCoordinates.forEach(x => {
-						// проверяем совпадение по занечению в 2х массивах
-						strToNumber.forEach(w => {
-							if (x[i] == w[0] && x[i + 1] == w[1]) {
-								console.log('Попал по своим! Падла!');
-								//меняем фон
-								document.getElementById(enemyUnit).classList.add("popal");
-								//удаляем найденый элемент
-								userUnitCoordinates.splice(userUnitCoordinates.indexOf(x), 1);
-								const delUnitClass = document.getElementById(enemyUnit).classList[2];
-								document.getElementById(enemyUnit).classList.remove(delUnitClass);
-								if (userUnitCoordinates.length === 0) return alert('game over');
-							}
-						})
-					});
-				}
+						let y1 = Math.floor(Math.random() * (max - min)) + min;
 
-				fireCoordinate = '';
-				found.action.move = 0;
-				found.action.fire = 0;
-				found.action.reload = 0;
-				cleanSelectBlock();
-				cleanSelectUserInfo();
+						if (map[ii + x1][jj + y1] === 0) {
+							count = count + 1;
+							const xCoord = ii + x1
+							const yCoord = jj + y1
 
-			}, { "once": true });
+							strToNumber.push([xCoord, yCoord])
+							document.getElementById('x' + xCoord + 'y' + yCoord).classList.add("mimo");
+						}
+
+
+					} while (count < 4);
+
+
+
+					console.log(strToNumber)
+
+					// if (unitMap[ii][jj] <= 1) document.getElementById(enemyUnit).classList.add("mimo");
+					// if (unitMap[ii][jj1] <= 1) document.getElementById(enemyUnit1).classList.add("mimo");
+					// if (unitMap[ii][jj2] <= 1) document.getElementById(enemyUnit2).classList.add("mimo");
+
+
+					//огонь по юнитам противника
+					for (i = 0; i < enemyUnitCoordinates.length; i++) {
+						enemyUnitCoordinates.forEach(x => {
+							// проверяем совпадение по занечению в 2х массивах
+							strToNumber.forEach(w => {
+								if (x[i] == w[0] && x[i + 1] == w[1]) {
+									console.log('Boom!');
+									//меняем фон
+									document.getElementById(enemyUnit).classList.add("popal");
+									//удаляем найденый элемент
+									enemyUnitCoordinates.splice(enemyUnitCoordinates.indexOf(x), 1);
+									const delUnitClass = document.getElementById(enemyUnit).classList[2];
+									document.getElementById(enemyUnit).classList.remove(delUnitClass);
+									if (enemyUnitCoordinates.length === 0) return alert('game over');
+									console.log(enemyUnitCoordinates)
+								}
+							})
+						});
+
+					}
+					//огонь по своим
+					for (i = 0; i < userUnitCoordinates.length; i++) {
+						userUnitCoordinates.forEach(x => {
+							// проверяем совпадение по занечению в 2х массивах
+							strToNumber.forEach(w => {
+								if (x[i] == w[0] && x[i + 1] == w[1]) {
+									console.log('Попал по своим! Падла!');
+									//меняем фон
+									document.getElementById(enemyUnit).classList.add("popal");
+									//удаляем найденый элемент
+									userUnitCoordinates.splice(userUnitCoordinates.indexOf(x), 1);
+									const delUnitClass = document.getElementById(enemyUnit).classList[2];
+									document.getElementById(enemyUnit).classList.remove(delUnitClass);
+									if (userUnitCoordinates.length === 0) return alert('game over');
+								}
+							})
+						});
+					}
+					isGradSelect = false
+					fireCoordinate = '';
+					found.action.move = 0;
+					found.action.fire = 0;
+					found.action.reload = 0;
+					cleanSelectBlock();
+					cleanSelectUserInfo();
+
+				}, { "once": true });
+
+			} else {
+				document.querySelector('.array-land').addEventListener('click', e => {
+					// нажата не блок
+					if (!e.target.closest('.block')) return;
+					//находим Id нажатого элемента
+					const enemyUnit = e.target.id;
+					console.log('coordinte ', enemyUnit);
+					//убираем xy
+					let ii = enemyUnit.match(/(?<=x)\d+/) | 0;
+					let jj = enemyUnit.match(/(?<=y)\d+/) | 0;
+					//создаем массив нажатого блока
+					const strToNumber = [];
+					strToNumber.push([ii, jj]);
+					if (unitMap[ii][jj] <= 1) document.getElementById(enemyUnit).classList.add("mimo");
+
+
+					//огонь по юнитам противника
+					for (i = 0; i < enemyUnitCoordinates.length; i++) {
+						enemyUnitCoordinates.forEach(x => {
+							// проверяем совпадение по занечению в 2х массивах
+							strToNumber.forEach(w => {
+								if (x[i] == w[0] && x[i + 1] == w[1]) {
+									console.log('Boom!');
+									//меняем фон
+									document.getElementById(enemyUnit).classList.add("popal");
+									//удаляем найденый элемент
+									enemyUnitCoordinates.splice(enemyUnitCoordinates.indexOf(x), 1);
+									const delUnitClass = document.getElementById(enemyUnit).classList[2];
+									document.getElementById(enemyUnit).classList.remove(delUnitClass);
+									if (enemyUnitCoordinates.length === 0) return alert('game over');
+									console.log(enemyUnitCoordinates)
+								}
+							})
+						});
+
+					}
+					//огонь по своим
+					for (i = 0; i < userUnitCoordinates.length; i++) {
+						userUnitCoordinates.forEach(x => {
+							// проверяем совпадение по занечению в 2х массивах
+							strToNumber.forEach(w => {
+								if (x[i] == w[0] && x[i + 1] == w[1]) {
+									console.log('Попал по своим! Падла!');
+									//меняем фон
+									document.getElementById(enemyUnit).classList.add("popal");
+									//удаляем найденый элемент
+									userUnitCoordinates.splice(userUnitCoordinates.indexOf(x), 1);
+									const delUnitClass = document.getElementById(enemyUnit).classList[2];
+									document.getElementById(enemyUnit).classList.remove(delUnitClass);
+									if (userUnitCoordinates.length === 0) return alert('game over');
+								}
+							})
+						});
+					}
+
+					fireCoordinate = '';
+					found.action.move = 0;
+					found.action.fire = 0;
+					found.action.reload = 0;
+					cleanSelectBlock();
+					cleanSelectUserInfo();
+
+				}, { "once": true });
+			}
 		}
 	} else if (e.target.closest('.button-reload')) {
 		const found = modulesUserUnit.find(element => element.id === lastClassUnit);
