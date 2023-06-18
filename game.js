@@ -194,6 +194,14 @@ for (let i = 0; i < xCoordinate; i++) {
 	};
 };
 
+
+//делаем функцию ходов по череди
+
+const iiTurn = 1;
+const userTurn = 1;
+
+
+
 // select выбор юнита
 const landSelection = document.querySelector('.main');
 landSelection.addEventListener("click", function (e) {
