@@ -23,15 +23,22 @@ for (let i = 0; i < xCoordinate; i++) {
 		map[i][j] = 0;
 	}
 }
+
+//создаем таблицу агро
+const damageMap = [];
+for (let i = 0; i < xCoordinate; i++) {
+	damageMap[i] = [];
+	for (let j = 0; j < yCoordinate; j++) {
+		damageMap[i][j] = 0;
+	}
+}
 //создаем пустой массив юнитов
-const unitMap = [];
 for (let i = 0; i < xCoordinate; i++) {
 	unitMap[i] = [];
 	for (let j = 0; j < yCoordinate; j++) {
 		unitMap[i][j] = 0;
 	}
 }
-// console.log(unitMap)
 
 // функция ландшафта amount - количество элементов,  lenghtArr - количество повтрорений,
 // rnd - разброс от начальной точки, classLandscape - выбор ландшафта land - выбор типа ландшафта
@@ -76,8 +83,8 @@ gunsUser();
 gunsEnemy();
 
 
-
-const leftPanelUserInfo = function (unit) {
+//создание левой панели
+const createLeftPanelUserInfo = function (unit) {
 	const element = document.querySelector('.info-button');
 	const buttonMove = document.createElement('button');
 	buttonMove.setAttribute('id', 'btn-move');
@@ -152,12 +159,30 @@ const cleanMoveBlock = function () {
 		el.classList.remove('move');
 	}
 }
+// рисуем на карте агро от выстрела
+const agroLandSSelect = function (i, j) {
+	for (let x = -1; x < 2; x++) {
+		let cellX = x + i;
+		for (let y = -1; y < 2; y++) {
+			let cellY = y + j;
+			if (cellX >= 0 && cellY >= 0 && cellX < xCoordinate && cellY < yCoordinate) {
+				const elem = document.getElementById('x' + cellX + 'y' + cellY);
+				elem.classList.add("agro");
+				damageMap[cellX][cellY] = agro + 10;
+			}
+		}
+	}
+}
+
 let lastIdUnit = '';
 let lastClassUnit = '';
 let moveCoordinate = '';
 let fireCoordinate = '';
 let isUserUnitEnable = false;
 let isGradSelect = false;
+let selectBlock = '';
+let agroSelectUnit = '';
+let agro = 50;
 
 const enemyUnitCoordinates = [];
 for (let i = 0; i < xCoordinate; i++) {
@@ -168,23 +193,13 @@ for (let i = 0; i < xCoordinate; i++) {
 		};
 	};
 };
-//создаем массив с координатами игрока
-const userUnitCoordinates = [];
-for (let i = 0; i < xCoordinate; i++) {
-	for (let j = 0; j < yCoordinate - 18; j++) {
-		let a = unitMap[i][j];
-		if (a == 2 || a === 3 || a == 4) {
-			userUnitCoordinates.push([i, j]);
-		};
-	};
-};
 
 // select выбор юнита
 const landSelection = document.querySelector('.main');
 landSelection.addEventListener("click", function (e) {
 	if (e.target.closest('.array-land')) {
 		if (!e.target.closest('.block')) return;
-		const selectBlock = e.target.id;
+		selectBlock = e.target.id;
 
 		if (!isUserUnitEnable) {
 			if (!moveCoordinate && !fireCoordinate) {
@@ -193,12 +208,12 @@ landSelection.addEventListener("click", function (e) {
 						if (element.id === 'User_grad_2' || element.id === 'User_grad_1') {
 							isGradSelect = true;
 						}
-						// console.log(element.id)
 						document.getElementById(selectBlock).classList.add("select");
 						lastClassUnit = e.target.classList[2];
 						lastIdUnit = selectBlock;
+						agroSelectUnit = lastIdUnit;
 						isUserUnitEnable = true;
-						leftPanelUserInfo(lastClassUnit);
+						createLeftPanelUserInfo(lastClassUnit);
 					}
 				});
 			}
@@ -251,163 +266,63 @@ landSelection.addEventListener("click", function (e) {
 
 	} else if (e.target.closest('.button-fire')) {
 		const found = modulesUserUnit.find(element => element.id === lastClassUnit);
-
 		if (found.action.fire !== 0) {
-			if (isGradSelect) {
-				document.querySelector('.array-land').addEventListener('click', e => {
-					// нажата не блок
-					if (!e.target.closest('.block')) return;
-					//находим Id нажатого элемента
-					const enemyUnit = e.target.id;
-					console.log(map)
-					let ii = enemyUnit.match(/(?<=x)\d+/) | 0;
-					let jj = enemyUnit.match(/(?<=y)\d+/) | 0;
+			document.querySelector('.array-land').addEventListener('click', e => {
+				// нажата не блок
+				if (!e.target.closest('.block')) return;
+				//находим Id нажатого элемента
+				const enemyUnit = e.target.id;
+				let ii = enemyUnit.match(/(?<=x)\d+/) | 0;
+				let jj = enemyUnit.match(/(?<=y)\d+/) | 0;
 
+				const i = agroSelectUnit.match(/(?<=x)\d+/) | 0;
+				const j = agroSelectUnit.match(/(?<=y)\d+/) | 0;
 
+				if (isGradSelect) {
 					let max = 3;
 					let min = -3
 					let count = 0;
-					//создаем массив нажатого блока
-					const strToNumber = [];
 					do {
 						let x1 = Math.floor(Math.random() * (max - min)) + min;
-
 						let y1 = Math.floor(Math.random() * (max - min)) + min;
-
-						if (map[ii + x1][jj + y1] === 0) {
+						const xCoord = ii + x1
+						const yCoord = jj + y1
+						if (unitMap[xCoord][yCoord] === 0) {
 							count = count + 1;
-							const xCoord = ii + x1
-							const yCoord = jj + y1
-
-							strToNumber.push([xCoord, yCoord])
 							document.getElementById('x' + xCoord + 'y' + yCoord).classList.add("mimo");
+						} else if (unitMap[xCoord][yCoord] > 0) {
+							document.getElementById('x' + xCoord + 'y' + yCoord).classList.add("popal");
+							unitMap[xCoord][yCoord] = 0
+							count = count + 1;
 						}
-
-
 					} while (count < 4);
 
-
-
-					console.log(strToNumber)
-
-					// if (unitMap[ii][jj] <= 1) document.getElementById(enemyUnit).classList.add("mimo");
-					// if (unitMap[ii][jj1] <= 1) document.getElementById(enemyUnit1).classList.add("mimo");
-					// if (unitMap[ii][jj2] <= 1) document.getElementById(enemyUnit2).classList.add("mimo");
-
-
-					//огонь по юнитам противника
-					for (i = 0; i < enemyUnitCoordinates.length; i++) {
-						enemyUnitCoordinates.forEach(x => {
-							// проверяем совпадение по занечению в 2х массивах
-							strToNumber.forEach(w => {
-								if (x[i] == w[0] && x[i + 1] == w[1]) {
-									console.log('Boom!');
-									//меняем фон
-									document.getElementById(enemyUnit).classList.add("popal");
-									//удаляем найденый элемент
-									enemyUnitCoordinates.splice(enemyUnitCoordinates.indexOf(x), 1);
-									const delUnitClass = document.getElementById(enemyUnit).classList[2];
-									document.getElementById(enemyUnit).classList.remove(delUnitClass);
-									if (enemyUnitCoordinates.length === 0) return alert('game over');
-									console.log(enemyUnitCoordinates)
-								}
-							})
-						});
-
-					}
-					//огонь по своим
-					for (i = 0; i < userUnitCoordinates.length; i++) {
-						userUnitCoordinates.forEach(x => {
-							// проверяем совпадение по занечению в 2х массивах
-							strToNumber.forEach(w => {
-								if (x[i] == w[0] && x[i + 1] == w[1]) {
-									console.log('Попал по своим! Падла!');
-									//меняем фон
-									document.getElementById(enemyUnit).classList.add("popal");
-									//удаляем найденый элемент
-									userUnitCoordinates.splice(userUnitCoordinates.indexOf(x), 1);
-									const delUnitClass = document.getElementById(enemyUnit).classList[2];
-									document.getElementById(enemyUnit).classList.remove(delUnitClass);
-									if (userUnitCoordinates.length === 0) return alert('game over');
-								}
-							})
-						});
-					}
 					isGradSelect = false
-					fireCoordinate = '';
-					found.action.move = 0;
-					found.action.fire = 0;
-					found.action.reload = 0;
-					cleanSelectBlock();
-					cleanSelectUserInfo();
 
-				}, { "once": true });
-
-			} else {
-				document.querySelector('.array-land').addEventListener('click', e => {
-					// нажата не блок
-					if (!e.target.closest('.block')) return;
-					//находим Id нажатого элемента
-					const enemyUnit = e.target.id;
-					console.log('coordinte ', enemyUnit);
-					//убираем xy
-					let ii = enemyUnit.match(/(?<=x)\d+/) | 0;
-					let jj = enemyUnit.match(/(?<=y)\d+/) | 0;
-					//создаем массив нажатого блока
-					const strToNumber = [];
-					strToNumber.push([ii, jj]);
-					if (unitMap[ii][jj] <= 1) document.getElementById(enemyUnit).classList.add("mimo");
-
-
-					//огонь по юнитам противника
-					for (i = 0; i < enemyUnitCoordinates.length; i++) {
-						enemyUnitCoordinates.forEach(x => {
-							// проверяем совпадение по занечению в 2х массивах
-							strToNumber.forEach(w => {
-								if (x[i] == w[0] && x[i + 1] == w[1]) {
-									console.log('Boom!');
-									//меняем фон
-									document.getElementById(enemyUnit).classList.add("popal");
-									//удаляем найденый элемент
-									enemyUnitCoordinates.splice(enemyUnitCoordinates.indexOf(x), 1);
-									const delUnitClass = document.getElementById(enemyUnit).classList[2];
-									document.getElementById(enemyUnit).classList.remove(delUnitClass);
-									if (enemyUnitCoordinates.length === 0) return alert('game over');
-									console.log(enemyUnitCoordinates)
-								}
-							})
-						});
-
-					}
-					//огонь по своим
-					for (i = 0; i < userUnitCoordinates.length; i++) {
-						userUnitCoordinates.forEach(x => {
-							// проверяем совпадение по занечению в 2х массивах
-							strToNumber.forEach(w => {
-								if (x[i] == w[0] && x[i + 1] == w[1]) {
-									console.log('Попал по своим! Падла!');
-									//меняем фон
-									document.getElementById(enemyUnit).classList.add("popal");
-									//удаляем найденый элемент
-									userUnitCoordinates.splice(userUnitCoordinates.indexOf(x), 1);
-									const delUnitClass = document.getElementById(enemyUnit).classList[2];
-									document.getElementById(enemyUnit).classList.remove(delUnitClass);
-									if (userUnitCoordinates.length === 0) return alert('game over');
-								}
-							})
-						});
+				} else {
+					if (unitMap[ii][jj] === 0) {
+						document.getElementById('x' + ii + 'y' + jj).classList.add("mimo");
+					} else if (unitMap[ii][jj] > 0) {
+						document.getElementById('x' + ii + 'y' + jj).classList.add("popal");
+						document.getElementById('x' + ii + 'y' + jj).classList.remove(document.getElementById('x' + ii + 'y' + jj).classList[2])
 					}
 
-					fireCoordinate = '';
-					found.action.move = 0;
-					found.action.fire = 0;
-					found.action.reload = 0;
-					cleanSelectBlock();
-					cleanSelectUserInfo();
+				}
+				unitMap[ii][jj] = 0;
+				agroLandSSelect(i, j);
+				fireCoordinate = '';
+				found.action.move = 0;
+				found.action.fire = 0;
+				found.action.reload = 0;
+				cleanSelectBlock();
+				cleanSelectUserInfo();
 
-				}, { "once": true });
-			}
-		}
+				console.log(damageMap)
+
+
+			}, { "once": true });
+		} else console.log('некому ходить , конец хода')
+
 	} else if (e.target.closest('.button-reload')) {
 		const found = modulesUserUnit.find(element => element.id === lastClassUnit);
 		found.action.move = 0;
@@ -430,7 +345,7 @@ landSelection.addEventListener("mouseover", function (e) {
 		if (sliceSelect.item(sliceSelect.length - 1) === 'move' && sliceSelect.item(sliceSelect.length - 2) === 'select') {
 			changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 3));
 		} else changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 2));
-	} else if (sliceSelect.item(sliceSelect.length - 1) === 'select') {
+	} else if (sliceSelect.item(sliceSelect.length - 1) === 'select' || sliceSelect.item(sliceSelect.length - 1) === 'agro') {
 		changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 2));
 	} else changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 1));
 })
@@ -438,4 +353,4 @@ landSelection.addEventListener("mouseout", function (e) {
 	let target = e.target.closest('.block');
 	if (!target) return
 	cleanSelectUserUnit();
-}) 
+})

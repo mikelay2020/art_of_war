@@ -219,6 +219,7 @@ const modulesDamage = [
 const modules = [...modulesUserUnit, ...modulesLandscape, ...modulesEnemyUnit, ...modulesDamage]
 
 
+const unitMap = [];
 
 const gunsUser = function () {
 	let k = 0;
