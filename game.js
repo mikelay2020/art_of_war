@@ -82,9 +82,17 @@ for (let i = 0; i < xCoordinate; i++) {
 gunsUser();
 gunsEnemy();
 
+const elem = document.querySelector('.info-logo');
+const buttonEnd = document.createElement('button');
+buttonEnd.setAttribute('id', 'btn-end');
+buttonEnd.type = 'button';
+buttonEnd.innerHTML = 'Конец хода';
+buttonEnd.className = 'button-end';
+elem.append(buttonEnd);
 
 //создание левой панели
 const createLeftPanelUserInfo = function (unit) {
+
 	const element = document.querySelector('.info-button');
 	const buttonMove = document.createElement('button');
 	buttonMove.setAttribute('id', 'btn-move');
@@ -173,7 +181,6 @@ const agroLandSSelect = function (i, j) {
 		}
 	}
 }
-
 let lastIdUnit = '';
 let lastClassUnit = '';
 let moveCoordinate = '';
@@ -226,6 +233,7 @@ landSelection.addEventListener("click", function (e) {
 				});
 			}
 		}
+
 		moveCoordinate = ''
 		fireCoordinate = ''
 	} else if (e.target.closest('.button-move')) {
@@ -242,7 +250,7 @@ landSelection.addEventListener("click", function (e) {
 					let cellY = y + j;
 					if (cellX >= 0 && cellY >= 0 && cellX < xCoordinate && cellY < yCoordinate) {
 						const elem = document.getElementById('x' + cellX + 'y' + cellY);
-						if (elem.classList[2] === undefined) {
+						if (elem.classList[2] === undefined || elem.classList[2] === 'agro') {
 							elem.classList.add("move");
 						}
 					}
@@ -349,16 +357,35 @@ landSelection.addEventListener("mouseover", function (e) {
 	let target = e.target.closest('.block');
 	if (!target) return
 	let sliceSelect = e.target.classList;
-	if (sliceSelect.item(sliceSelect.length - 1) === 'move') {
-		if (sliceSelect.item(sliceSelect.length - 1) === 'move' && sliceSelect.item(sliceSelect.length - 2) === 'select') {
-			changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 3));
-		} else changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 2));
-	} else if (sliceSelect.item(sliceSelect.length - 1) === 'select' || sliceSelect.item(sliceSelect.length - 1) === 'agro') {
-		changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 2));
-	} else changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 1));
+	if(sliceSelect.contains('agro') || sliceSelect.contains('move') || sliceSelect.contains('select')){
+
+		changeSelectUserUnit('' + sliceSelect[2]);
+	}else if (sliceSelect.lenght >2){
+		changeSelectUserUnit('' + sliceSelect[1]);
+	}else {
+		changeSelectUserUnit('' + sliceSelect[1])
+	} ;
+
+
+
 })
+
 landSelection.addEventListener("mouseout", function (e) {
 	let target = e.target.closest('.block');
 	if (!target) return
 	cleanSelectUserUnit();
 })
+
+
+
+// if (sliceSelect.item(sliceSelect.length - 1) === 'move') {
+		
+// 	if (sliceSelect.item(sliceSelect.length - 1) === 'move' && sliceSelect.item(sliceSelect.length - 2) === 'select' || sliceSelect.item(sliceSelect.length - 2) === 'agro') {
+// 		
+// 	} else if (sliceSelect.item(sliceSelect.length - 1) === 'move' && sliceSelect.item(sliceSelect.length - 2) === 'select' && sliceSelect.item(sliceSelect.length - 3) === 'agro') {
+// 		changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 4));
+// 	} else changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 2));
+// } else if (sliceSelect.item(sliceSelect.length - 1) === 'select' || sliceSelect.item(sliceSelect.length - 1) === 'agro') {
+// 	changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 2));
+// } else changeSelectUserUnit('' + sliceSelect.item(sliceSelect.length - 1));
+// })

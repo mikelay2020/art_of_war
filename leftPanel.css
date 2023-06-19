@@ -99,6 +99,23 @@ h3{
 	filter: brightness(30%);
 }
 
+
+.button-end {
+	width: 100px;
+	height: 50px;
+	border: 1px solid #000;
+	border-radius: 30%;
+	background: #2ff1ff;
+}
+
+.button-end:hover {
+	filter: brightness(150%);
+}
+
+.button-end:active {
+	filter: brightness(30%);
+}
+
 .unit-picture{
 	width: 100%;
 	height: 200px;
